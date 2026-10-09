@@ -3,326 +3,571 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informatika Fun! - Dashboard Pembelajaran</title>
+    <title>Informatika Fun! - Dashboard Pembelajaran Interaktif</title>
     
     <!-- Memuat Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Plus+Jakarta+Sans:wght@500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     
-    <!-- Memuat Ikon -->
+    <!-- Memuat Ikon Phosphor -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <style>
         :root {
-            --deep-navy: #14243A;
-            --denim-blue: #426A91;
+            --deep-navy: #14243A; 
+            --denim-blue: #426A91; 
             --soft-denim: #6489AE;
-            --soft-green: #A8C9AE;
-            --off-white: #F4F7FA;
+            --soft-green: #A8C9AE; 
+            --off-white: #F4F7FA; 
             --pure-white: #FFFFFF;
-            --muted-blue: #B5C2D0;
-            
-            --status-red: #ff6b6b;
-            --status-yellow: #feca57;
+            --cyan-accent: #00bcd4; 
+            --cyan-light: #e0f7fa; 
             --status-green: #1dd1a1;
+            --glow-cyan: rgba(0, 188, 212, 0.4); 
+            --glow-green: rgba(29, 209, 161, 0.4);
         }
-
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--off-white); color: var(--deep-navy); }
+        h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; }
+        .menu-title, .user-name, .btn-action { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .hidden { display: none !important; }
 
-        /* PENGATURAN 1 LAYAR PENUH (TANPA SCROLL) */
-        body {
-            background-color: var(--pure-white);
-            color: var(--deep-navy);
-            font-family: 'Inter', sans-serif;
-            height: 100vh;
-            overflow: hidden;
+        /* TAMPILAN HALAMAN LOGIN */
+        #login-container {
+            background: linear-gradient(135deg, #F7FBFF 0%, #AFC9D8 50%, #B7D8C8 100%);
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
-        }
-
-        h1, h2, .badge-jp, .progress-percentage { font-family: 'Space Grotesk', sans-serif; }
-        h3, .menu-title, .user-name { font-family: 'Plus Jakarta Sans', sans-serif; }
-
-        /* Header */
-        .top-header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 2vh 5%;
-            background: var(--pure-white);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        }
-        .logo-area { display: flex; align-items: center; gap: 12px; }
-        .logo-icon { font-size: 2rem; color: var(--denim-blue); }
-        .logo-area h1 { font-size: 1.2rem; font-weight: 700; color: var(--deep-navy); }
-        .tagline { font-size: 0.75rem; color: var(--soft-denim); }
-
-        .user-profile { display: flex; align-items: center; gap: 16px; }
-        .user-info { display: flex; align-items: center; gap: 8px; }
-        .status-dot { width: 8px; height: 8px; background-color: var(--status-green); border-radius: 50%; }
-        .btn-profile { background: none; border: none; color: var(--deep-navy); font-size: 1.5rem; cursor: pointer; transition: 0.3s; }
-        .btn-profile:hover { color: var(--denim-blue); transform: scale(1.1); }
-
-        /* Wadah Utama Fleksibel */
-        .dashboard-container { 
-            padding: 1vh 5%; 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            flex: 1; 
-            width: 100%; 
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-        }
-
-        /* Hero Section (Kotak BAB I telah diubah menjadi gelap) */
-        .hero-section {
-            background: var(--deep-navy); 
-            border-radius: 20px; 
-            padding: 3vh 32px;
-            display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 8px 20px rgba(20, 36, 58, 0.15); 
-        }
-        
-        .badge-jp { 
-            display: inline-flex; align-items: center; gap: 6px; 
-            background: rgba(255, 255, 255, 0.15); 
-            padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; 
-            color: var(--pure-white); 
-            margin-bottom: 1vh; font-weight: bold; 
-        }
-        
-        .hero-title { 
-            font-size: 1.8rem; line-height: 1.2; 
-            color: var(--pure-white); 
-        }
-        
-        .hero-icon { 
-            font-size: 5rem; 
-            color: var(--soft-green); 
-            opacity: 0.9; 
-        }
-
-        /* Progress Card */
-        .progress-card {
-            background: var(--pure-white);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 20px; padding: 2vh 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-        }
-        .progress-header, .progress-footer { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1vh; }
-        .progress-text, .last-activity { font-size: 0.85rem; color: #666; }
-        .progress-bar-container { height: 8px; background: #eee; border-radius: 10px; overflow: hidden; margin-bottom: 1vh; }
-        .progress-fill { height: 100%; background: var(--denim-blue); transition: width 1s ease; }
-        .progress-percentage { font-size: 1.2rem; color: var(--denim-blue); font-weight: bold; }
-
-        /* Menu */
-        .menu-row {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap; 
             justify-content: center;
-            gap: 12px;
-        }
-
-        .menu-button {
-            background: var(--denim-blue);
-            color: var(--pure-white);
-            text-decoration: none;
-            border-radius: 16px;
-            padding: 1.5vh 16px;
-            display: flex;
             align-items: center;
-            gap: 12px;
-            flex: 1 1 calc(25% - 16px); 
-            min-width: 200px;
-            box-shadow: 0 4px 10px rgba(66, 106, 145, 0.2);
-            cursor: pointer;
-            transition: background 0.3s ease, box-shadow 0.3s ease;
+            padding: 20px;
+            width: 100%;
         }
 
-        .menu-button:hover:not(.locked) {
-            background: var(--deep-navy);
-            box-shadow: 0 6px 15px rgba(20, 36, 58, 0.3);
-        }
-
-        .menu-icon { font-size: 1.8rem; color: var(--soft-green); }
-        .menu-title { font-size: 0.95rem; font-weight: 600; line-height: 1.2; }
-
-        .status-indicator {
-            margin-left: auto;
-            font-size: 1.3rem;
-            display: flex; align-items: center;
-        }
-        .status-red { color: var(--status-red); }
-        .status-yellow { color: var(--status-yellow); }
-        .status-green { color: var(--status-green); }
-        .status-locked { color: rgba(255, 255, 255, 0.5); }
-
-        .menu-button.locked { background: var(--muted-blue); cursor: not-allowed; box-shadow: none; }
-
-        @keyframes clickPop {
-            0% { transform: scale(1); }
-            50% { transform: scale(0.92); }
-            100% { transform: scale(1); }
-        }
-        .animate-click { animation: clickPop 0.3s ease-out; }
-
-        /* Footer */
-        footer { 
+        .login-card { 
+            background: #ffffff; 
+            width: 100%; 
+            max-width: 400px; 
+            border-radius: 20px; 
+            padding: 32px 28px; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); 
             text-align: center; 
-            padding: 2vh; 
-            background: var(--pure-white);
-            color: #777; 
-            border-top: 1px solid #eee; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
         }
-        .footer-title { font-weight: 600; font-size: 0.9rem; }
+        .header-icon { 
+            width: 50px; 
+            height: 50px; 
+            background: #F0F7FF; 
+            border-radius: 12px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin: 0 auto 12px auto; 
+            color: #527F9B; 
+        }
+        .login-title { font-size: 24px; font-weight: 800; color: #173B57; margin-bottom: 6px; }
+        .login-desc { font-size: 13px; color: #314F68; margin-bottom: 20px; }
+        
+        .role-selector { display: flex; background: #F1F5F9; padding: 4px; border-radius: 10px; margin-bottom: 20px; }
+        .role-option { flex: 1; }
+        .role-option input[type="radio"] { display: none; }
+        .role-label { display: block; padding: 8px 12px; font-size: 13px; font-weight: 700; color: #314F68; cursor: pointer; border-radius: 8px; transition: 0.2s; }
+        .role-option input[type="radio"]:checked + .role-label { background: #ffffff; color: #173B57; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08); }
+
+        .input-group { text-align: left; margin-bottom: 16px; }
+        .input-group label { display: block; font-size: 12px; font-weight: 700; color: #173B57; margin-bottom: 6px; }
+        .input-field { width: 100%; height: 44px; background: #ffffff; border: 1px solid #CBD5E1; border-radius: 10px; padding: 0 14px; font-size: 14px; color: #173B57; outline: none; }
+        .input-field:focus { border-color: #527F9B; }
+        .form-section { display: none; }
+        .form-section.active { display: block; }
+
+        .btn-login-submit { width: 100%; height: 46px; background: #527F9B; color: #ffffff; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+        .btn-login-submit:hover { background: #477FA0; }
+        
+        .status-message { font-size: 13px; font-weight: 600; padding: 10px; border-radius: 8px; display: none; margin-top: 12px; word-break: break-word; }
+        .status-error { background: #FEE2E2; color: #e63946; }
+        .status-success { background: #D1FAE5; color: #2a9d8f; }
+        
+        .card-footer { margin-top: 24px; padding-top: 16px; border-top: 1px solid #E2E8F0; }
+        .footer-title { font-size: 12px; font-weight: 800; color: #314F68; }
+        .footer-desc { font-size: 11px; color: #6F91AA; margin-top: 2px; }
+
+        /* TAMPILAN DASHBOARD MATERI */
+        #dashboard-container { display: flex; flex-direction: column; min-height: 100vh; width: 100%; }
+        .top-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 4%; background: var(--pure-white); border-bottom: 1px solid rgba(0, 0, 0, 0.05); flex-shrink: 0; z-index: 10; }
+        .logo-area { display: flex; align-items: center; gap: 10px; }
+        .logo-icon { font-size: 1.8rem; color: var(--denim-blue); transition: transform 0.3s ease; }
+        .logo-area:hover .logo-icon { transform: rotate(15deg) scale(1.1); }
+        .logo-area h1 { font-size: 1.1rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 2px; }
+        .tagline { font-size: 0.7rem; color: var(--soft-denim); }
+        .user-profile { display: flex; align-items: center; gap: 12px; }
+        .user-info { display: flex; align-items: center; gap: 6px; }
+        .status-dot { width: 8px; height: 8px; background-color: var(--status-green); border-radius: 50%; box-shadow: 0 0 8px var(--status-green); animation: pulseDot 2s infinite ease-in-out; }
+        .btn-profile { background: none; border: none; color: var(--deep-navy); font-size: 1.4rem; cursor: pointer; transition: transform 0.2s ease; }
+        .btn-profile:hover { transform: scale(1.15) rotate(10deg); }
+
+        .page-title-section { background: var(--deep-navy); margin: 15px 4%; padding: 3vh 32px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 8px 20px rgba(20, 36, 58, 0.15); z-index: 8; flex-shrink: 0; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .page-title-section:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(20, 36, 58, 0.22); }
+        .page-title-content { display: flex; flex-direction: column; gap: 8px; }
+        .page-title-section .badge-jp { align-self: flex-start; background: rgba(255, 255, 255, 0.15); padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; color: var(--pure-white); font-weight: bold; backdrop-filter: blur(4px); }
+        .chapter-title { font-size: 1.6rem; color: var(--pure-white); line-height: 1.2; }
+        .meeting-title { font-size: 1rem; color: var(--soft-green); font-weight: 500; }
+        .hero-icon { font-size: 4.5rem; color: var(--soft-green); opacity: 0.9; transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .page-title-section:hover .hero-icon { transform: scale(1.1) rotate(-8deg); }
+
+        .nav-container { background: var(--pure-white); padding: 10px 2%; border-bottom: 1px solid rgba(0, 0, 0, 0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.02); flex-shrink: 0; z-index: 5; }
+        .menu-row { display: flex; flex-direction: row; flex-wrap: nowrap; gap: 6px; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; padding-bottom: 4px; }
+        .menu-row::-webkit-scrollbar { display: none; }
+
+        .tab-button { position: relative; background: var(--pure-white); color: var(--denim-blue); border: 2px solid var(--denim-blue); border-radius: 12px; padding: 8px 10px; display: flex; align-items: center; gap: 6px; flex: 1; min-width: fit-content; cursor: pointer; overflow: hidden; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); white-space: nowrap; justify-content: center; user-select: none; }
+        .tab-button:hover { background: var(--off-white); transform: translateY(-3px); box-shadow: 0 6px 14px rgba(66, 106, 145, 0.18); }
+        .tab-button:active { transform: translateY(1px) scale(0.96); box-shadow: 0 2px 6px rgba(66, 106, 145, 0.12); }
+        .menu-icon { font-size: 1.12rem; transition: transform 0.3s ease, color 0.3s ease; }
+        .menu-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2px; }
+        .status-indicator { margin-left: 4px; font-size: 0.95rem; transition: transform 0.3s ease; }
+
+        .tab-button.active-tab { background: var(--deep-navy); color: var(--pure-white); border-color: var(--deep-navy); box-shadow: 0 4px 12px rgba(20, 36, 58, 0.25); }
+        .tab-button.active-tab .menu-icon { color: var(--soft-green); }
+        .tab-button.status-progress { background: var(--cyan-light); color: var(--deep-navy); border-color: var(--cyan-accent); box-shadow: 0 0 10px var(--glow-cyan); }
+        .tab-button.status-progress .menu-icon, .tab-button.status-progress .status-indicator { color: var(--cyan-accent); }
+        .tab-button.status-completed { background: var(--soft-green); color: var(--deep-navy); border-color: var(--soft-green); box-shadow: 0 4px 12px var(--glow-green); }
+        .tab-button.status-completed .menu-icon, .tab-button.status-completed .status-indicator { color: var(--deep-navy); }
+
+        .ripple { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.6); transform: scale(0); animation: rippleAnim 0.55s linear; pointer-events: none; }
+        .main-content-area { flex: 1; padding: 24px 4%; overflow-y: auto; background: var(--off-white); }
+        .tab-pane { display: none; max-width: 1400px; margin: 0 auto; }
+        .tab-pane.active { display: block; animation: contentSlideUp 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        .content-card { background: var(--pure-white); border-radius: 20px; padding: 28px; box-shadow: 0 6px 18px rgba(0,0,0,0.04); border: 1px solid rgba(0, 0, 0, 0.05); margin-bottom: 20px; transition: transform 0.3s ease; }
+        .btn-action { position: relative; background: var(--denim-blue); color: var(--pure-white); border: none; padding: 12px 26px; border-radius: 12px; font-weight: 600; font-size: 0.9rem; cursor: pointer; overflow: hidden; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; box-shadow: 0 4px 12px rgba(66, 106, 145, 0.25); user-select: none; }
+        .btn-action:hover { background: var(--deep-navy); transform: translateY(-2px) scale(1.02); box-shadow: 0 6px 16px rgba(20, 36, 58, 0.3); }
+        .btn-action.success { background: var(--status-green); color: var(--deep-navy); pointer-events: none; box-shadow: 0 4px 15px var(--glow-green); }
+
+        @keyframes pulseDot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
+        @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
+        @keyframes contentSlideUp { from { opacity: 0; transform: translateY(16px) scale(0.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        
+        @media (max-width: 768px) {
+            .page-title-section { padding: 24px; margin: 10px 4%; }
+            .hero-icon { display: none; }
+            .chapter-title { font-size: 1.3rem; }
+        }
     </style>
 </head>
 <body>
     
-        
-    <header class="top-header">
-        <div class="logo-area">
-            <i class="ph-fill ph-code-block logo-icon"></i>
-            <div>
-                <h1>INFORMATIKA FUN!</h1>
-                <p class="tagline">Website Pembelajaran Informatika Yang Interaktif dan Menyenangkan.</p>
+    <!-- WADAH LOGIN -->
+    <div id="login-container">
+        <div class="login-card">
+            <div class="header-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/>
+                </svg>
+            </div>
+    
+            <h1 class="login-title">LOGIN</h1>
+            <p class="login-desc">Silakan masuk untuk melanjutkan pembelajaran Informatika.</p>
+    
+            <div class="role-selector">
+                <div class="role-option">
+                    <input type="radio" id="roleSiswa" name="userRole" value="siswa" checked>
+                    <label for="roleSiswa" class="role-label">Siswa</label>
+                </div>
+                <div class="role-option">
+                    <input type="radio" id="roleGuru" name="userRole" value="guru">
+                    <label for="roleGuru" class="role-label">Guru</label>
+                </div>
+            </div>
+    
+            <form id="loginForm">
+                <div id="siswaSection" class="form-section active">
+                    <div class="input-group">
+                        <label for="nama">Nama Lengkap</label>
+                        <input type="text" id="nama" class="input-field" placeholder="Masukkan nama lengkap">
+                    </div>
+                    <div class="input-group">
+                        <label for="nisn">NISN</label>
+                        <input type="text" id="nisn" class="input-field" placeholder="Masukkan NISN" inputmode="numeric">
+                    </div>
+                </div>
+    
+                <div id="guruSection" class="form-section">
+                    <div class="input-group">
+                        <label for="email">Email Guru</label>
+                        <input type="email" id="email" class="input-field" placeholder="Masukkan email guru">
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="input-field" placeholder="Masukkan password">
+                    </div>
+                </div>
+    
+                <button type="submit" id="btnLogin" class="btn-login-submit">LOGIN</button>
+                <div id="statusMessage" class="status-message"></div>
+            </form>
+    
+            <div class="card-footer">
+                <p class="footer-title">INFORMATIKA FUN</p>
+                <p class="footer-desc">By: Riski Amalia, S.Pd</p>
             </div>
         </div>
-        <div class="user-profile">
-            <div class="user-info">
-                <span class="status-dot"></span>
-                <span id="user-name" class="user-name">Memuat...</span>
-            </div>
-            <button class="btn-profile"><i class="ph ph-user-circle"></i></button>
-        </div>
-    </header>
+    </div>
 
-    <main class="dashboard-container">
-        <!-- AREA HERO -->
-        <section class="hero-section">
-            <div>
+    <!-- WADAH DASHBOARD -->
+    <div id="dashboard-container" class="hidden">
+        <header class="top-header">
+            <div class="logo-area">
+                <i class="ph-fill ph-code-block logo-icon"></i>
+                <div>
+                    <h1>INFORMATIKA FUN!</h1>
+                    <p class="tagline">Pembelajaran Interaktif & Menyenangkan</p>
+                </div>
+            </div>
+            <div class="user-profile">
+                <div class="user-info">
+                    <span class="status-dot"></span>
+                    <span id="user-name" class="user-name">Siswa</span>
+                </div>
+                <button class="btn-profile" title="Profil Siswa"><i class="ph ph-user-circle"></i></button>
+            </div>
+        </header>
+
+        <section class="page-title-section">
+            <div class="page-title-content">
                 <div class="badge-jp"><i class="ph ph-clock"></i> JP: 120 MENIT</div>
-                <h2 class="hero-title">BAB I — KONSEP DAN ANALISIS DATA</h2>
+                <h2 class="chapter-title">BAB I: Konsep dan Analisis Data Terstruktur</h2>
+                <h3 class="meeting-title">Pertemuan 2: Pengidentifikasian dan Pemodelan Data Terstruktur di Kehidupan Sehari-hari</h3>
             </div>
             <i class="ph-duotone ph-database hero-icon"></i>
         </section>
 
-        <!-- KARTU PROGRES -->
-        <section class="progress-card">
-            <div class="progress-header">
-                <h3>PROGRES PEMBELAJARAN</h3>
-                <span id="progress-text" class="progress-text">0 dari 7 menu selesai</span>
-            </div>
-            <div class="progress-bar-container">
-                <div id="progress-fill" class="progress-fill" style="width: 0%;"></div>
-            </div>
-            <div class="progress-footer">
-                <span class="last-activity">Aktivitas terakhir: <span id="last-activity-text">Memuat...</span></span>
-                <span id="progress-percentage" class="progress-percentage">0%</span>
-            </div>
-        </section>
+        <nav class="nav-container">
+            <div id="menu-row" class="menu-row"></div>
+        </nav>
 
-        <!-- AREA MENU -->
-        <section id="menu-row" class="menu-row">
-            <!-- JavaScript mengisi menu di sini -->
-        </section>
-    </main>
+        <main class="main-content-area">
+            <div id="content-container"></div>
+        </main>
+    </div>
 
-    <!-- FOOTER -->
-    <footer>
-        <p class="footer-title">INFORMATIKA FUN @ By: Riski Amalia, S.Pd.</p>
-    </footer>
+    <!-- LOGIKA JAVASCRIPT & FIREBASE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, collection, query, where, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-    <script>
-        const learningMenus = [
-            // Isi tautan (url) kamu di dalam tanda kutip di bawah ini
-            { id: "atp", title: "ATP", icon: "ph-target", url: "" },
-            { id: "asesmen-awal", title: "Asesmen Awal", icon: "ph-clipboard-text", url: "" },
-            { id: "pertanyaan-esensial", title: "Pertanyaan Esensial", icon: "ph-lightbulb", url: "" },
-            { id: "eksplorasi-konsep", title: "Eksplorasi Konsep", icon: "ph-folders", url: "" },
-            { id: "for-learning", title: "For Learning", icon: "ph-compass", url: "" },
-            { id: "penerapan-konsep", title: "Penerapan Konsep", icon: "ph-app-window", url: "" },
-            { id: "as-learning", title: "As Learning", icon: "ph-chart-line-up", url: "" }
-        ];
-
-        let userProgress = {
-            "atp": { status: "green" }, 
-            "asesmen-awal": { status: "yellow" }, 
-            "pertanyaan-esensial": { status: "red" } 
+        const firebaseConfig = {
+            apiKey: "AIzaSyB7bt1JBOXkh81nYk8sVkuFpSmuJ3kOj94",
+            authDomain: "databasemateriinformatika.firebaseapp.com",
+            projectId: "databasemateriinformatika",
+            storageBucket: "databasemateriinformatika.firebasestorage.app",
+            messagingSenderId: "961327810612",
+            appId: "1:961327810612:web:48e952f20159a5b932e261",
+            measurementId: "G-TDZQZ9L36B"
         };
 
-        function renderMenus() {
-            const container = document.getElementById("menu-row");
-            container.innerHTML = "";
-            let completedCount = 0;
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-            learningMenus.forEach((menu, index) => {
-                const progress = userProgress[menu.id] || { status: "red" };
-                let isLocked = false;
+        const learningMenus = [
+            { id: "atp", title: "ATP", icon: "ph-target", type: "read" },
+            { id: "asesmen-awal", title: "ASESMEN AWAL", icon: "ph-clipboard-text", type: "task" },
+            { id: "pertanyaan-esensial", title: "PERTANYAAN ESENSIAL", icon: "ph-question", type: "read" },
+            { id: "eksplorasi-konsep", title: "EKSPLORASI KONSEP", icon: "ph-folders", type: "read" },
+            { id: "for-learning", title: "FOR LEARNING", icon: "ph-lightbulb", type: "task" },
+            { id: "penerapan-konsep", title: "PENERAPAN KONSEP", icon: "ph-wrench", type: "task" },
+            { id: "as-learning", title: "AS LEARNING", icon: "ph-brain", type: "task" }
+        ];
+
+        let currentUser = localStorage.getItem('infoFun_Nama');
+        let currentNISN = localStorage.getItem('infoFun_NISN');
+        let storageKey = currentNISN ? `progress_Informatika_${currentNISN}` : '';
+        let userProgress = {};
+
+        const loginContainer = document.getElementById('login-container');
+        const dashboardContainer = document.getElementById('dashboard-container');
+        const userNameDisplay = document.getElementById('user-name');
+        const loginForm = document.getElementById('loginForm');
+        const statusDiv = document.getElementById('statusMessage');
+        const btnLogin = document.getElementById('btnLogin');
+
+        function createRipple(event, element) {
+            const circle = document.createElement("span");
+            const diameter = Math.max(element.clientWidth, element.clientHeight);
+            const radius = diameter / 2;
+            const rect = element.getBoundingClientRect();
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${event.clientX - rect.left - radius}px`;
+            circle.style.top = `${event.clientY - rect.top - radius}px`;
+            circle.classList.add("ripple");
+            const ripple = element.getElementsByClassName("ripple")[0];
+            if (ripple) ripple.remove();
+            element.appendChild(circle);
+        }
+
+        function updateButtonVisuals(btn, menu, status) {
+            btn.classList.remove("status-progress", "status-completed");
+            let statusIcon = "ph-circle"; 
+            if (status === "progress") { 
+                btn.classList.add("status-progress"); 
+                statusIcon = "ph-spinner-gap ph-spin"; 
+            } else if (status === "completed") { 
+                btn.classList.add("status-completed"); 
+                statusIcon = "ph-check-circle"; 
+            }
+            btn.innerHTML = `<i class="ph-duotone ${menu.icon} menu-icon"></i> <span class="menu-title">${menu.title}</span> <i class="ph-bold ${statusIcon} status-indicator"></i>`;
+        }
+
+        function saveProgress(menuId, status) {
+            userProgress[menuId] = status;
+            localStorage.setItem(storageKey, JSON.stringify(userProgress));
+        }
+
+        function mulaiAplikasi() {
+            userProgress = JSON.parse(localStorage.getItem(storageKey)) || {};
+            const menuContainer = document.getElementById("menu-row");
+            const contentContainer = document.getElementById("content-container");
+            
+            if (!menuContainer || !contentContainer) return;
+
+            menuContainer.innerHTML = "";
+            contentContainer.innerHTML = "";
+
+            learningMenus.forEach((menu) => {
+                const currentStatus = userProgress[menu.id] || "unstarted";
+
+                const btn = document.createElement("button");
+                btn.id = `btn-${menu.id}`;
+                btn.className = "tab-button";
+                btn.dataset.target = menu.id;
+                updateButtonVisuals(btn, menu, currentStatus);
+
+                btn.addEventListener("click", function(e) { createRipple(e, this); });
+
+                const pane = document.createElement("div");
+                pane.id = `pane-${menu.id}`;
+                pane.className = "tab-pane";
+                let actionButtonText = menu.type === "read" ? "Tandai Selesai Dibaca" : "Kirim Jawaban Tugas";
                 
-                if (index > 0) {
-                    const prevMenu = learningMenus[index - 1];
-                    const prevProgress = userProgress[prevMenu.id] || { status: "red" };
-                    if (prevProgress.status !== "green") isLocked = true;
-                }
-
-                if (progress.status === "green") completedCount++;
-
-                let statusIconHTML = "";
-                if (isLocked) {
-                    statusIconHTML = `<i class="ph-fill ph-lock-key status-locked"></i>`;
-                } else if (progress.status === "green") {
-                    statusIconHTML = `<i class="ph-fill ph-check-circle status-green"></i>`;
-                } else if (progress.status === "yellow") {
-                    statusIconHTML = `<i class="ph-fill ph-clock-countdown status-yellow"></i>`;
-                } else {
-                    statusIconHTML = `<i class="ph-fill ph-play-circle status-red"></i>`;
-                }
-
-                const btn = document.createElement("a");
-                btn.href = isLocked ? "#" : (menu.url !== "" ? menu.url : "#");
-                btn.className = `menu-button ${isLocked ? "locked" : ""}`;
-                
-                if (!isLocked && menu.url !== "") {
-                    btn.target = "_blank";
-                }
-
-                btn.innerHTML = `
-                    <i class="ph-duotone ${menu.icon} menu-icon"></i>
-                    <span class="menu-title">${menu.title}</span>
-                    <div class="status-indicator">
-                        ${statusIconHTML}
+                pane.innerHTML = `
+                    <div class="content-card">
+                        <i class="ph-duotone ${menu.icon}" style="font-size: 3rem; color: var(--denim-blue); margin-bottom: 12px; display: inline-block;"></i>
+                        <h2>${menu.title}</h2>
+                        <p style="margin-top: 12px; color: #555;">Ruang konten ini siap diisi dengan materi.</p>
+                        <br>
+                        <button id="action-${menu.id}" class="btn-action ${currentStatus === 'completed' ? 'success' : ''}">
+                            <i class="ph-bold ${currentStatus === 'completed' ? 'ph-check' : 'ph-paper-plane-right'}"></i> 
+                            <span class="btn-text">${currentStatus === 'completed' ? 'Selesai Dikerjakan' : actionButtonText}</span>
+                        </button>
                     </div>
                 `;
 
-                btn.addEventListener("click", function(e) {
-                    this.classList.add("animate-click");
-                    setTimeout(() => { this.classList.remove("animate-click"); }, 300);
+                btn.addEventListener("click", () => {
+                    document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active-tab"));
+                    document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
+                    btn.classList.add("active-tab");
+                    document.getElementById(`pane-${menu.id}`).classList.add("active");
 
-                    if (isLocked) {
-                        e.preventDefault();
-                        alert("Selesaikan aktivitas sebelumnya terlebih dahulu.");
-                    } else if (menu.url === "") {
-                        e.preventDefault();
-                        setTimeout(() => alert("Halaman belum dihubungkan."), 100); 
+                    if ((userProgress[menu.id] || "unstarted") === "unstarted") {
+                        saveProgress(menu.id, "progress");
+                        updateButtonVisuals(btn, menu, "progress");
                     }
                 });
 
-                container.appendChild(btn);
+                menuContainer.appendChild(btn);
+                contentContainer.appendChild(pane);
+
+                const actionBtn = document.getElementById(`action-${menu.id}`);
+                actionBtn.addEventListener("click", async function(e) {
+                    createRipple(e, this);
+                    
+                    const btnText = this.querySelector('.btn-text');
+                    const originalText = btnText.innerText;
+                    btnText.innerText = "Mengirim...";
+
+                    try {
+                        await addDoc(collection(db, "pengumpulan_tugas"), {
+                            namaSiswa: currentUser,
+                            nisnSiswa: currentNISN,
+                            menuDikerjakan: menu.title,
+                            waktuPengumpulan: serverTimestamp()
+                        });
+
+                        this.classList.add("success");
+                        this.innerHTML = `<i class="ph-bold ph-check"></i> <span class="btn-text">Tersimpan di Database!</span>`;
+                        
+                        saveProgress(menu.id, "completed");
+                        updateButtonVisuals(btn, menu, "completed");
+
+                    } catch (error) {
+                        console.error("Error menambah dokumen: ", error);
+                        alert("Gagal mengirim tugas: " + error.message);
+                        btnText.innerText = originalText; 
+                    }
+                });
             });
 
-            const percentage = Math.round((completedCount / learningMenus.length) * 100);
-            document.getElementById("progress-fill").style.width = `${percentage}%`;
-            document.getElementById("progress-percentage").innerText = `${percentage}%`;
-            document.getElementById("progress-text").innerText = `${completedCount} dari ${learningMenus.length} menu selesai`;
+            const firstButton = document.getElementById(`btn-${learningMenus[0].id}`);
+            if (firstButton) firstButton.click();
         }
 
-        function initApp() {
-            document.getElementById("user-name").innerText = "Siswa Kreatif";
-            document.getElementById("last-activity-text").innerText = "Asesmen Awal";
-            renderMenus();
+        // Cek login otomatis saat halaman dimuat
+        if (currentUser && currentNISN) {
+            loginContainer.classList.add('hidden');
+            dashboardContainer.classList.remove('hidden');
+            userNameDisplay.textContent = currentUser;
+            mulaiAplikasi();
         }
 
-        document.addEventListener("DOMContentLoaded", initApp);
+        // Peran Siswa/Guru
+        const roleInputs = document.querySelectorAll('input[name="userRole"]');
+        const siswaSection = document.getElementById('siswaSection');
+        const guruSection = document.getElementById('guruSection');
+
+        function showStatus(message, type) {
+            statusDiv.innerText = message;
+            statusDiv.style.display = 'block';
+            statusDiv.className = type === 'error' ? 'status-message status-error' : 'status-message status-success';
+        }
+
+        roleInputs.forEach(input => {
+            input.addEventListener('change', (e) => {
+                statusDiv.style.display = 'none';
+                if (e.target.value === 'siswa') {
+                    siswaSection.classList.add('active');
+                    guruSection.classList.remove('active');
+                } else {
+                    guruSection.classList.add('active');
+                    siswaSection.classList.remove('active');
+                }
+            });
+        });
+
+        // PENANGANAN UTAMA FORM SUBMIT
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Menghentikan pengisian/reload form bawaan HTML
+            
+            const selectedRole = document.querySelector('input[name="userRole"]:checked').value;
+
+            if (selectedRole === 'siswa') {
+                const namaInput = document.getElementById('nama').value.trim();
+                const nisnInput = document.getElementById('nisn').value.trim();
+
+                if (namaInput === '' || nisnInput === '') {
+                    showStatus('Nama dan NISN wajib diisi.', 'error');
+                    return;
+                }
+
+                btnLogin.innerText = "Memeriksa...";
+                showStatus('Memeriksa data siswa ke database...', 'success');
+
+                try {
+                    let docs = [];
+                    const nisnStr = nisnInput;
+                    const nisnNum = Number(nisnInput);
+
+                    // Pengecekan 1: NISN Teks
+                    let q1 = query(collection(db, "siswa"), where("NISN", "==", nisnStr));
+                    let snap1 = await getDocs(q1);
+                    snap1.forEach(d => docs.push(d.data()));
+
+                    // Pengecekan 2: NISN Angka
+                    if (docs.length === 0 && !isNaN(nisnNum)) {
+                        let q2 = query(collection(db, "siswa"), where("NISN", "==", nisnNum));
+                        let snap2 = await getDocs(q2);
+                        snap2.forEach(d => docs.push(d.data()));
+                    }
+
+                    // Pengecekan 3: nisn Teks (huruf kecil)
+                    if (docs.length === 0) {
+                        let q3 = query(collection(db, "siswa"), where("nisn", "==", nisnStr));
+                        let snap3 = await getDocs(q3);
+                        snap3.forEach(d => docs.push(d.data()));
+                    }
+
+                    // Pengecekan 4: nisn Angka (huruf kecil)
+                    if (docs.length === 0 && !isNaN(nisnNum)) {
+                        let q4 = query(collection(db, "siswa"), where("nisn", "==", nisnNum));
+                        let snap4 = await getDocs(q4);
+                        snap4.forEach(d => docs.push(d.data()));
+                    }
+
+                    if (docs.length === 0) {
+                        btnLogin.innerText = "LOGIN";
+                        showStatus('NISN "' + nisnInput + '" tidak terdaftar di database.', 'error');
+                        return;
+                    }
+
+                    let siswaCocok = false;
+                    let namaDiDatabase = "";
+
+                    docs.forEach((data) => {
+                        for (let kolom in data) {
+                            let namaKolomBersih = kolom.trim().toLowerCase().replace(/_/g, "");
+                            if (namaKolomBersih.includes("nama")) {
+                                let isiNamaDatabase = data[kolom];
+                                if (typeof isiNamaDatabase === "string") {
+                                    namaDiDatabase = isiNamaDatabase;
+                                    if (isiNamaDatabase.trim().toLowerCase() === namaInput.toLowerCase()) {
+                                        siswaCocok = true;
+                                        break; 
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+                    if (siswaCocok) {
+                        showStatus('Login berhasil! Membuka materi...', 'success');
+                        
+                        localStorage.setItem('infoFun_Nama', namaInput);
+                        localStorage.setItem('infoFun_NISN', nisnInput);
+                        currentUser = namaInput;
+                        currentNISN = nisnInput;
+                        storageKey = `progress_Informatika_${currentNISN}`;
+                        userNameDisplay.textContent = currentUser;
+
+                        setTimeout(() => {
+                            loginContainer.classList.add('hidden');
+                            dashboardContainer.classList.remove('hidden');
+                            mulaiAplikasi();
+                        }, 500);
+                        
+                    } else {
+                        btnLogin.innerText = "LOGIN";
+                        showStatus('Nama "' + namaInput + '" tidak cocok dengan NISN tersebut. (Nama terdaftar: ' + (namaDiDatabase || "tidak ditemukan") + ')', 'error');
+                    }
+
+                } catch (error) {
+                    console.error("Error Database:", error);
+                    btnLogin.innerText = "LOGIN";
+                    showStatus('Kendala Firebase: ' + error.message, 'error');
+                }
+
+            } else {
+                const emailInput = document.getElementById('email').value.trim();
+                const passwordInput = document.getElementById('password').value;
+
+                if (emailInput === '' || passwordInput === '') {
+                    showStatus('Email dan password belum diisi.', 'error');
+                    return;
+                }
+                btnLogin.innerText = "Memeriksa...";
+                showStatus('Memeriksa akun Guru...', 'success');
+
+                signInWithEmailAndPassword(auth, emailInput, passwordInput)
+                .then(() => {
+                    showStatus('Login Guru berhasil! Mengalihkan...', 'success');
+                    setTimeout(() => {
+                        window.location.href = "https://riski902-alt.github.io/TOMBOL-PILIH-KELAS/"; 
+                    }, 1000);
+                })
+                .catch((error) => {
+                    btnLogin.innerText = "LOGIN";
+                    showStatus('Login Guru gagal: ' + error.message, 'error');
+                });
+            }
+        });
     </script>
 </body>
 </html>
