@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informatika Fun! - Dashboard Pembelajaran</title>
+    
+    <!-- Memuat Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Plus+Jakarta+Sans:wght@500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Memuat Ikon -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        :root {
+            --deep-navy: #14243A;
+            --denim-blue: #426A91;
+            --soft-denim: #6489AE;
+            --soft-green: #A8C9AE;
+            --off-white: #F4F7FA;
+            --pure-white: #FFFFFF;
+            --muted-blue: #B5C2D0;
+            
+            --status-red: #ff6b6b;
+            --status-yellow: #feca57;
+            --status-green: #1dd1a1;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* PENGATURAN 1 LAYAR PENUH (TANPA SCROLL) */
+        body {
+            background-color: var(--pure-white);
+            color: var(--deep-navy);
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1, h2, .badge-jp, .progress-percentage { font-family: 'Space Grotesk', sans-serif; }
+        h3, .menu-title, .user-name { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        /* Header */
+        .top-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 2vh 5%;
+            background: var(--pure-white);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .logo-area { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { font-size: 2rem; color: var(--denim-blue); }
+        .logo-area h1 { font-size: 1.2rem; font-weight: 700; color: var(--deep-navy); }
+        .tagline { font-size: 0.75rem; color: var(--soft-denim); }
+
+        .user-profile { display: flex; align-items: center; gap: 16px; }
+        .user-info { display: flex; align-items: center; gap: 8px; }
+        .status-dot { width: 8px; height: 8px; background-color: var(--status-green); border-radius: 50%; }
+        .btn-profile { background: none; border: none; color: var(--deep-navy); font-size: 1.5rem; cursor: pointer; transition: 0.3s; }
+        .btn-profile:hover { color: var(--denim-blue); transform: scale(1.1); }
+
+        /* Wadah Utama Fleksibel */
+        .dashboard-container { 
+            padding: 1vh 5%; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            flex: 1; 
+            width: 100%; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        /* Hero Section (Kotak BAB I telah diubah menjadi gelap) */
+        .hero-section {
+            background: var(--deep-navy); 
+            border-radius: 20px; 
+            padding: 3vh 32px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 8px 20px rgba(20, 36, 58, 0.15); 
+        }
+        
+        .badge-jp { 
+            display: inline-flex; align-items: center; gap: 6px; 
+            background: rgba(255, 255, 255, 0.15); 
+            padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; 
+            color: var(--pure-white); 
+            margin-bottom: 1vh; font-weight: bold; 
+        }
+        
+        .hero-title { 
+            font-size: 1.8rem; line-height: 1.2; 
+            color: var(--pure-white); 
+        }
+        
+        .hero-icon { 
+            font-size: 5rem; 
+            color: var(--soft-green); 
+            opacity: 0.9; 
+        }
+
+        /* Progress Card */
+        .progress-card {
+            background: var(--pure-white);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 20px; padding: 2vh 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+        .progress-header, .progress-footer { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1vh; }
+        .progress-text, .last-activity { font-size: 0.85rem; color: #666; }
+        .progress-bar-container { height: 8px; background: #eee; border-radius: 10px; overflow: hidden; margin-bottom: 1vh; }
+        .progress-fill { height: 100%; background: var(--denim-blue); transition: width 1s ease; }
+        .progress-percentage { font-size: 1.2rem; color: var(--denim-blue); font-weight: bold; }
+
+        /* Menu */
+        .menu-row {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap; 
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .menu-button {
+            background: var(--denim-blue);
+            color: var(--pure-white);
+            text-decoration: none;
+            border-radius: 16px;
+            padding: 1.5vh 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1 1 calc(25% - 16px); 
+            min-width: 200px;
+            box-shadow: 0 4px 10px rgba(66, 106, 145, 0.2);
+            cursor: pointer;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .menu-button:hover:not(.locked) {
+            background: var(--deep-navy);
+            box-shadow: 0 6px 15px rgba(20, 36, 58, 0.3);
+        }
+
+        .menu-icon { font-size: 1.8rem; color: var(--soft-green); }
+        .menu-title { font-size: 0.95rem; font-weight: 600; line-height: 1.2; }
+
+        .status-indicator {
+            margin-left: auto;
+            font-size: 1.3rem;
+            display: flex; align-items: center;
+        }
+        .status-red { color: var(--status-red); }
+        .status-yellow { color: var(--status-yellow); }
+        .status-green { color: var(--status-green); }
+        .status-locked { color: rgba(255, 255, 255, 0.5); }
+
+        .menu-button.locked { background: var(--muted-blue); cursor: not-allowed; box-shadow: none; }
+
+        @keyframes clickPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.92); }
+            100% { transform: scale(1); }
+        }
+        .animate-click { animation: clickPop 0.3s ease-out; }
+
+        /* Footer */
+        footer { 
+            text-align: center; 
+            padding: 2vh; 
+            background: var(--pure-white);
+            color: #777; 
+            border-top: 1px solid #eee; 
+        }
+        .footer-title { font-weight: 600; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    
+        
+    <header class="top-header">
+        <div class="logo-area">
+            <i class="ph-fill ph-code-block logo-icon"></i>
+            <div>
+                <h1>INFORMATIKA FUN!</h1>
+                <p class="tagline">Website Pembelajaran Informatika Yang Interaktif dan Menyenangkan.</p>
+            </div>
+        </div>
+        <div class="user-profile">
+            <div class="user-info">
+                <span class="status-dot"></span>
+                <span id="user-name" class="user-name">Memuat...</span>
+            </div>
+            <button class="btn-profile"><i class="ph ph-user-circle"></i></button>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <!-- AREA HERO -->
+        <section class="hero-section">
+            <div>
+                <div class="badge-jp"><i class="ph ph-clock"></i> JP: 120 MENIT</div>
+                <h2 class="hero-title">BAB I — KONSEP DAN ANALISIS DATA</h2>
+            </div>
+            <i class="ph-duotone ph-database hero-icon"></i>
+        </section>
+
+        <!-- KARTU PROGRES -->
+        <section class="progress-card">
+            <div class="progress-header">
+                <h3>PROGRES PEMBELAJARAN</h3>
+                <span id="progress-text" class="progress-text">0 dari 7 menu selesai</span>
+            </div>
+            <div class="progress-bar-container">
+                <div id="progress-fill" class="progress-fill" style="width: 0%;"></div>
+            </div>
+            <div class="progress-footer">
+                <span class="last-activity">Aktivitas terakhir: <span id="last-activity-text">Memuat...</span></span>
+                <span id="progress-percentage" class="progress-percentage">0%</span>
+            </div>
+        </section>
+
+        <!-- AREA MENU -->
+        <section id="menu-row" class="menu-row">
+            <!-- JavaScript mengisi menu di sini -->
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p class="footer-title">INFORMATIKA FUN @ By: Riski Amalia, S.Pd.</p>
+    </footer>
+
+    <script>
+        const learningMenus = [
+            // Isi tautan (url) kamu di dalam tanda kutip di bawah ini
+            { id: "atp", title: "ATP", icon: "ph-target", url: "" },
+            { id: "asesmen-awal", title: "Asesmen Awal", icon: "ph-clipboard-text", url: "" },
+            { id: "pertanyaan-esensial", title: "Pertanyaan Esensial", icon: "ph-lightbulb", url: "" },
+            { id: "eksplorasi-konsep", title: "Eksplorasi Konsep", icon: "ph-folders", url: "" },
+            { id: "for-learning", title: "For Learning", icon: "ph-compass", url: "" },
+            { id: "penerapan-konsep", title: "Penerapan Konsep", icon: "ph-app-window", url: "" },
+            { id: "as-learning", title: "As Learning", icon: "ph-chart-line-up", url: "" }
+        ];
+
+        let userProgress = {
+            "atp": { status: "green" }, 
+            "asesmen-awal": { status: "yellow" }, 
+            "pertanyaan-esensial": { status: "red" } 
+        };
+
+        function renderMenus() {
+            const container = document.getElementById("menu-row");
+            container.innerHTML = "";
+            let completedCount = 0;
+
+            learningMenus.forEach((menu, index) => {
+                const progress = userProgress[menu.id] || { status: "red" };
+                let isLocked = false;
+                
+                if (index > 0) {
+                    const prevMenu = learningMenus[index - 1];
+                    const prevProgress = userProgress[prevMenu.id] || { status: "red" };
+                    if (prevProgress.status !== "green") isLocked = true;
+                }
+
+                if (progress.status === "green") completedCount++;
+
+                let statusIconHTML = "";
+                if (isLocked) {
+                    statusIconHTML = `<i class="ph-fill ph-lock-key status-locked"></i>`;
+                } else if (progress.status === "green") {
+                    statusIconHTML = `<i class="ph-fill ph-check-circle status-green"></i>`;
+                } else if (progress.status === "yellow") {
+                    statusIconHTML = `<i class="ph-fill ph-clock-countdown status-yellow"></i>`;
+                } else {
+                    statusIconHTML = `<i class="ph-fill ph-play-circle status-red"></i>`;
+                }
+
+                const btn = document.createElement("a");
+                btn.href = isLocked ? "#" : (menu.url !== "" ? menu.url : "#");
+                btn.className = `menu-button ${isLocked ? "locked" : ""}`;
+                
+                if (!isLocked && menu.url !== "") {
+                    btn.target = "_blank";
+                }
+
+                btn.innerHTML = `
+                    <i class="ph-duotone ${menu.icon} menu-icon"></i>
+                    <span class="menu-title">${menu.title}</span>
+                    <div class="status-indicator">
+                        ${statusIconHTML}
+                    </div>
+                `;
+
+                btn.addEventListener("click", function(e) {
+                    this.classList.add("animate-click");
+                    setTimeout(() => { this.classList.remove("animate-click"); }, 300);
+
+                    if (isLocked) {
+                        e.preventDefault();
+                        alert("Selesaikan aktivitas sebelumnya terlebih dahulu.");
+                    } else if (menu.url === "") {
+                        e.preventDefault();
+                        setTimeout(() => alert("Halaman belum dihubungkan."), 100); 
+                    }
+                });
+
+                container.appendChild(btn);
+            });
+
+            const percentage = Math.round((completedCount / learningMenus.length) * 100);
+            document.getElementById("progress-fill").style.width = `${percentage}%`;
+            document.getElementById("progress-percentage").innerText = `${percentage}%`;
+            document.getElementById("progress-text").innerText = `${completedCount} dari ${learningMenus.length} menu selesai`;
+        }
+
+        function initApp() {
+            document.getElementById("user-name").innerText = "Siswa Kreatif";
+            document.getElementById("last-activity-text").innerText = "Asesmen Awal";
+            renderMenus();
+        }
+
+        document.addEventListener("DOMContentLoaded", initApp);
+    </script>
+</body>
+</html>
